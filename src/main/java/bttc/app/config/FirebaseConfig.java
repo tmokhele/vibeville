@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -37,8 +36,8 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() throws Exception{
-        ResourceUtils.getURL(configPath).openStream();
-        InputStream serviceAccount = ResourceUtils.getURL(configPath).openStream();
+        InputStream serviceAccount =  getClass().getResourceAsStream("/serviceAccountKey.json");
+
         FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(serviceAccount)
                 .setDatabaseUrl(databaseUrl).build();
         FirebaseApp.initializeApp(options);
