@@ -1,4 +1,4 @@
-FROM ubuntu:15.04
+FROM openjdk:8-jdk-alpine
 
 RUN mkdir /app
 WORKDIR /app

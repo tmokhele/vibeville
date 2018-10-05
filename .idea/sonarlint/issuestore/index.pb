@@ -89,3 +89,12 @@ i
 9src/main/java/bttc/app/controller/FaceBookController.java,1\9\199ceec463cf9d78f62c342be96c7f7d2904e093
 c
 3src/main/java/bttc/app/service/FaceBookService.java,9\1\91c2ee55ac8aa1ef4e98f63000bae3c3457ff744
+e
+5src/main/java/bttc/app/app/ChatClientApplication.java,d\c\dcba14f0fa71c06fb08f2048dbfc234e26dcc29e
+`
+0src/test/java/ChatApplicationControllerTest.java,d\6\d6b938af21d515f018a039460cf25b326371fc4d
+>
+tebogochat.iml,b\1\b1e5029bd6ff5bda257b754400b004fa298ad8a9
+:
+
+Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
