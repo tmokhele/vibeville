@@ -46,7 +46,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
             throw appException.getError();
         } else if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
 
-            throw new NotFoundException();
+            throw new NotFoundException(error);
         }
     }
 }

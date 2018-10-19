@@ -1,15 +1,14 @@
 package bttc.app.exception;
 
-import java.io.IOException;
-
 public class NotFoundException extends RuntimeException {
-    AppException error;
+    private final AppException error;
+
+    public NotFoundException(AppException error) {
+        this.error = error;
+    }
 
     public AppException getError() {
         return error;
     }
 
-    public void setError(AppException error) {
-        this.error = error;
-    }
 }

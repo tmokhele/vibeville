@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-@Api(value = "AuthController", description = "Operations related to AuthController API.")
+@Api(value = "AuthController")
 public class AuthController {
 
     @Autowired
@@ -45,6 +45,7 @@ public class AuthController {
 
         FirebaseAuthResponse firebaseAuthResponse = userRepository.existsByUsername(loginRequest.getUsername(), loginRequest.getPassword());
         User accountInfo = userRepository.getAccountInfo(firebaseAuthResponse.getIdToken(), firebaseAuthResponse.getLocalId());
+        accountInfo.setUid(firebaseAuthResponse.getIdToken());
         UserPrincipal userPrincipal = UserPrincipal.create(accountInfo);
         userPrincipal.setUsername(loginRequest.getUsername());
         userPrincipal.setPassword(loginRequest.getPassword());
@@ -55,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User signUpRequest) throws Throwable {
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User signUpRequest) {
         UserLogin userLogin = new UserLogin();
         userLogin.setEmail(signUpRequest.getEmail());
         userLogin.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));

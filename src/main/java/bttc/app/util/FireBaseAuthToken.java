@@ -1,8 +1,6 @@
 package bttc.app.util;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;

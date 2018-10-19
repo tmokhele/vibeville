@@ -4,7 +4,7 @@ public class Chat {
 
     private User from;
     private String content;
-    private Action action;
+    private Token action;
 
     public User getFrom() {
         return from;
@@ -22,11 +22,11 @@ public class Chat {
         this.content = content;
     }
 
-    public Action getAction() {
+    public Token getAction() {
         return action;
     }
 
-    public void setAction(Action action) {
+    public void setAction(Token action) {
         this.action = action;
     }
 }

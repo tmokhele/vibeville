@@ -26,9 +26,7 @@ public class StallService {
         String url = "https://bttc-cb6f6.firebaseio.com/stallPaymentInformation.json?access_token=" + token;
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(url, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
-        map.entrySet().forEach(e -> {
-            jsonObjects.add(JSONObject.valueToString(e.getValue()));
-        });
+        map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
         return CompletableFuture.completedFuture(jsonObjects);
     }
 }

@@ -1,8 +1,5 @@
 package bttc.app.model;
 
-import com.google.gson.annotations.Since;
-
-import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -49,6 +49,17 @@ public class UserRepository {
         return responseEntity.getBody();
     }
 
+    public AccountInformation existsByIdToken(String idToken)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apiUrl);
+        stringBuilder.append(MessageFormat.format("getAccountInfo?key={0}",apiKey));
+        Token token = new Token();
+        token.setIdToken(idToken);
+        ResponseEntity<AccountInformation> responseEntity = restTemplate.postForEntity(stringBuilder.toString(),token, AccountInformation.class);
+        return responseEntity.getBody();
+    }
+
     public User getAccountInfo(String idToken, String uid) {
         StringBuilder stringBuilder = new StringBuilder();
         List<User> userList = new ArrayList<>();
@@ -57,9 +68,7 @@ public class UserRepository {
         stringBuilder.append(MessageFormat.format("profileInformation.json?auth={0}&orderBy=\"uid\"&equalTo=\"{1}\"", idToken, uid));
         ResponseEntity<Object> forEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) forEntity.getBody();
-        map.entrySet().forEach(e -> {
-            userList.add(g.fromJson(JSONObject.valueToString(e.getValue()), User.class));
-        });
+        map.entrySet().forEach(e -> userList.add(g.fromJson(JSONObject.valueToString(e.getValue()), User.class)));
         return userList.get(0);
     }
 

@@ -32,17 +32,16 @@ public class ClientSiteSwaggerConfig {
     }
 
     private List<Parameter> setupGlobalOperationParametersAndHeaders() {
-        List<Parameter> parameterList = newArrayList(
+        return newArrayList(
                 new ParameterBuilder().name("Authorization")
                         .modelRef(new ModelRef("string"))
                         .parameterType("header")
                         .build());
-        return parameterList;
 
     }
 
     private ApiInfo metaData() {
-        ApiInfo apiInfo = new ApiInfo(
+      return new ApiInfo(
                 "BOITSANAPE REST API",
                 "Spring Boot REST API for Boitsanape Business Solution",
                 "1.0",
@@ -53,6 +52,5 @@ public class ClientSiteSwaggerConfig {
                         "tmokhele@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
-        return apiInfo;
     }
 }

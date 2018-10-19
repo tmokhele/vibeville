@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 
@@ -30,12 +28,11 @@ public class FirebaseConfig {
 
     @Bean
     public DatabaseReference firebaseDatabse() {
-        DatabaseReference firebase = FirebaseDatabase.getInstance().getReference();
-        return firebase;
+       return FirebaseDatabase.getInstance().getReference();
     }
 
     @PostConstruct
-    public void init() throws Exception{
+    public void init() {
         InputStream serviceAccount =  getClass().getResourceAsStream("/serviceAccountKey.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(serviceAccount)
