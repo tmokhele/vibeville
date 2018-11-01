@@ -99,4 +99,22 @@ public class UserRepository {
         restTemplate.postForEntity(stringBuilder.toString(),new UserDelete(idToken),UserDelete.class);
         return true;
     }
+
+    public PasswordResetResponse resetPassword(String email)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apiUrl);
+        stringBuilder.append(MessageFormat.format("getOobConfirmationCode?key={0}",apiKey));
+        ResponseEntity<PasswordResetResponse> passwordResetResponseResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), new PasswordReset(email), PasswordResetResponse.class);
+        return passwordResetResponseResponseEntity.getBody();
+    }
+
+    public PasswordChangeResponse passwordChange(String idToken, String newPassword)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apiUrl);
+        stringBuilder.append(MessageFormat.format("setAccountInfo?key={0}",apiKey));
+        ResponseEntity<PasswordChangeResponse> passwordResetResponseResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), new PasswordRequest(idToken,newPassword), PasswordChangeResponse.class);
+        return passwordResetResponseResponseEntity.getBody();
+    }
 }

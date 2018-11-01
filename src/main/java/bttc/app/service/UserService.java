@@ -1,7 +1,6 @@
 package bttc.app.service;
 
-import bttc.app.model.ApiResponse;
-import bttc.app.model.SystemUser;
+import bttc.app.model.*;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -9,4 +8,8 @@ public interface UserService {
     ResponseEntity<ApiResponse> updateUser(SystemUser systemUser);
     ResponseEntity<ApiResponse> getUser(String userId);
     ResponseEntity<ApiResponse> getAllSystemUsers();
+    ResponseEntity<JwtAuthenticationResponse> existsByUsername(String usernameOrEmail, String password);
+    ResponseEntity<ApiResponse> saveLoginDetails(User user);
+    ResponseEntity<ApiResponse> resetPassword(String email);
+    ResponseEntity<ApiResponse> passwordChange(String newPassword);
 }

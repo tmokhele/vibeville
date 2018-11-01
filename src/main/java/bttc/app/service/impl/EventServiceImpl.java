@@ -4,6 +4,7 @@ import bttc.app.model.Event;
 import bttc.app.repository.EventRepository;
 import bttc.app.service.EventService;
 import bttc.app.util.ObjectMappingUtil;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,11 @@ public class EventServiceImpl  implements EventService {
     @Override
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
+        Gson g = new Gson();
         try {
             CompletableFuture<List<String>> allEvents = eventRepository.getAllEvents();
-
             for (String s : allEvents.get()) {
-                events.add((Event) ObjectMappingUtil.mapChats(s,Event.class));
+                events.add(g.fromJson(s, Event.class));
             }
         } catch (ExecutionException | InterruptedException e) {
            logger.error(String.format("Exception getting all event: %s",e.getMessage()));

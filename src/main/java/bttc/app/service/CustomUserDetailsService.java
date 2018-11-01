@@ -26,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserById(String userId) {
         AccountInformation firebaseAuthResponse = userRepository.existsByIdToken(userId);
         AccountUser accountUser = firebaseAuthResponse.getUsers().get(0);
+        accountUser.setLocalId(userId);
        return new UserPrincipal(accountUser.getLocalId(),accountUser.getEmail(),accountUser.getEmail(),accountUser.getEmail(),accountUser.getPasswordHash(),null) ;
 
     }

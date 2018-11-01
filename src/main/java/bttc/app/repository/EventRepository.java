@@ -2,6 +2,7 @@ package bttc.app.repository;
 
 import bttc.app.exception.RestTemplateResponseErrorHandler;
 import bttc.app.model.Event;
+import bttc.app.security.UserPrincipal;
 import bttc.app.util.Token;
 import com.google.gson.Gson;
 import org.json.JSONObject;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,8 +73,11 @@ public class EventRepository {
     public CompletableFuture<List<String>> getAllEvents() {
         List<String> jsonObjects = new ArrayList<>();
         String token = Token.invoke();
-        String url = "https://tebogo-chat.firebaseio.com/event.json?access_token=" + token;
-        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(url, Object.class);
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dbUrl);
+        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",token));
+        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
         map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
         return CompletableFuture.completedFuture(jsonObjects);

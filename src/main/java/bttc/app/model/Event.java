@@ -1,11 +1,12 @@
 package bttc.app.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Event {
+public class Event  implements Serializable{
     private long id;
     private String name;
-    private String code;
+    private String location;
     private String category;
     private Date releaseDate;
     private String description;
@@ -32,12 +33,12 @@ public class Event {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
+    public String getLocation() {
+        return location;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getCategory() {

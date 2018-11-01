@@ -15,7 +15,7 @@ public class EventController {
     EventService eventService;
 
     @PostMapping()
-    public @ResponseBody
+    public
     Event addEvent(@RequestBody Event event) {
 
         return eventService.addEvent(event);
@@ -26,7 +26,7 @@ public class EventController {
         return eventService.updateEvent(event);
     }
 
-    @GetMapping("/{eventId}")
+    @GetMapping("/{eventId}/detail")
     public Event getEvent(@PathVariable String eventId) {
         return eventService.getEvent(eventId);
 

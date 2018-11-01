@@ -4,14 +4,14 @@ public class SystemUser {
     private String uid;
     private String name;
     private String surname;
-    private String email;
+    private String emailAddress;
     private String password;
     private String contactNumber;
     private String role;
-    private boolean isInfo;
-    private boolean isTwitter;
-    private boolean isFaceBook;
-    private boolean isEvents;
+    private boolean info;
+    private boolean twitter;
+    private boolean faceBook;
+    private boolean events;
     public String getUid() {
         return uid;
     }
@@ -36,12 +36,12 @@ public class SystemUser {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getContactNumber() {
@@ -61,35 +61,35 @@ public class SystemUser {
     }
 
     public boolean isInfo() {
-        return isInfo;
+        return info;
     }
 
     public void setInfo(boolean info) {
-        isInfo = info;
+        this.info = info;
     }
 
     public boolean isTwitter() {
-        return isTwitter;
+        return twitter;
     }
 
     public void setTwitter(boolean twitter) {
-        isTwitter = twitter;
+        this.twitter = twitter;
     }
 
     public boolean isFaceBook() {
-        return isFaceBook;
+        return faceBook;
     }
 
     public void setFaceBook(boolean faceBook) {
-        isFaceBook = faceBook;
+        this.faceBook = faceBook;
     }
 
     public boolean isEvents() {
-        return isEvents;
+        return events;
     }
 
     public void setEvents(boolean events) {
-        isEvents = events;
+        this.events = events;
     }
 
     public String getPassword() {

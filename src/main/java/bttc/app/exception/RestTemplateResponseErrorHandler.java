@@ -26,27 +26,32 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
+        StringBuilder inputStringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getBody(), "UTF-8"));
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            inputStringBuilder.append(line);
+            line = bufferedReader.readLine();
+        }
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
-            // handle SERVER_ERROR
+           new AppException(String.format("We are currently having technical problems: %s",inputStringBuilder.toString()));
         }
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.CLIENT_ERROR) {
-            // handle CLIENT_ERROR
-            StringBuilder inputStringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getBody(), "UTF-8"));
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                inputStringBuilder.append(line);
-                line = bufferedReader.readLine();
-            }
+
             String o = (String) JSONObject.stringToValue(inputStringBuilder.toString());
             Gson gson = new Gson();
             NotFoundException appException = gson.fromJson(o, NotFoundException.class);
             throw appException.getError();
         } else if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
 
-            throw new NotFoundException(error);
+            throw new NotFoundException(new AppException("User not found"));
         }
+        else if (httpResponse.getStatusCode() == HttpStatus.UNAUTHORIZED)
+        {
+            throw  new AppException(String.format("User unauthorized: %s",inputStringBuilder.toString()));
+        }
+
     }
 }

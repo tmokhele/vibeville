@@ -82,6 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
+                .antMatchers("/api/**")
+                .permitAll()
                 .antMatchers("/v2/api-docs","/swagger-ui.html/**", "/swagger-resources/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/auth/**","/createFacebookAuthorization","/facebook","/getName","/verifyRequest")

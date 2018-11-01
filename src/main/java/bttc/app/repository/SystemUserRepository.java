@@ -3,7 +3,9 @@ package bttc.app.repository;
 import bttc.app.exception.RestTemplateResponseErrorHandler;
 import bttc.app.model.SystemUser;
 import bttc.app.util.Token;
+import bttc.app.util.UserSerializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,10 +50,14 @@ public class SystemUserRepository {
 
     public SystemUser addUser(SystemUser systemUser)
     {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(SystemUser.class, new UserSerializer())
+                .create();
+        SystemUser user = gson.fromJson(gson.toJson(systemUser),SystemUser.class);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("userInformation.json");
-        ResponseEntity<SystemUser> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), systemUser, SystemUser.class);
+        ResponseEntity<SystemUser> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), user, SystemUser.class);
         return userResponseEntity.getBody();
     }
    public SystemUser updateUser(SystemUser systemUser)
@@ -76,11 +84,21 @@ public class SystemUserRepository {
     {
         List<String> jsonObjects = new ArrayList<>();
         String token = Token.invoke();
-        String url = "https://tebogo-chat.firebaseio.com/userInformation.json?access_token=" + token;
-        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(url, Object.class);
-        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
-        map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
-        return CompletableFuture.completedFuture(jsonObjects);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apiUrl);
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",token));
+        URI uri = null;
+        try {
+             uri = new URI(stringBuilder.toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+//        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
+//        map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
+//        return CompletableFuture.completedFuture(jsonObjects);
+        return null;
     }
 
 
