@@ -18,7 +18,7 @@ public class Token {
                 idToken = fireBaseAuthToken.invoke();
             }
         } catch (IOException e) {
-            logger.error(String.format("Error getting token %"),e.getMessage());
+            logger.error(String.format("Error getting token %s",e.getMessage()));
         }
         return idToken;
     }

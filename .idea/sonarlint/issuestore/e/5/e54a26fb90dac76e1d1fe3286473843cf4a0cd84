@@ -1,8 +1,0 @@
-
-Ksquid:S1172
-"/Remove this unused method parameter "roleUser".(Á˜¬Êÿÿÿÿÿ
-;squid:S2326
-"Role is not used in the method.(Á˜¬Êÿÿÿÿÿ
-Wsquid:S2789"@Methods with an "Optional" return type should never return null.(¥¹ï
-fsquid:S00119
-"IRename this generic name to match the regular expression '^[A-Z][0-9]?$'.(Á˜¬Êÿÿÿÿÿ

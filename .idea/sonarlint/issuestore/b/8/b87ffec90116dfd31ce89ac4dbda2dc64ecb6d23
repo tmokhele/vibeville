@@ -1,7 +1,0 @@
-
-Csquid:S1602%",Remove useless curly braces around statement(‘û¶Ù
-ssquid:UselessImportCheck"ORemove this unused import 'org.springframework.beans.factory.annotation.Value'.(ìø›
-Xsquid:UselessImportCheck"4Remove this unused import 'java.io.FileInputStream'.(˜³ÉÓ
-~squid:UselessImportCheck"ZRemove this unused import 'com.google.api.client.googleapis.auth.oauth2.GoogleCredential'.(è¹øŸ
-Msquid:UselessImportCheck")Remove this unused import 'java.io.File'.(†Ğ¥Å
-Vsquid:UselessImportCheck"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ
