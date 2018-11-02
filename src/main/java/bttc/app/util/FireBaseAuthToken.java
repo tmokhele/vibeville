@@ -1,22 +1,16 @@
 package bttc.app.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class FireBaseAuthToken {
 
-
-    private String configPath ="serviceAccountKey.json";
-
-
     public  String invoke() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(configPath).getFile());
-        FileInputStream serviceAccount = new FileInputStream(file);
+        InputStream serviceAccount = TypeReference.class.getResourceAsStream("/serviceAccountKey.json");
         GoogleCredential googleCred = GoogleCredential.fromStream(serviceAccount);
         GoogleCredential scoped = googleCred.createScoped(
                 Arrays.asList(

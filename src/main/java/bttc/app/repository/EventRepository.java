@@ -73,7 +73,6 @@ public class EventRepository {
     public CompletableFuture<List<String>> getAllEvents() {
         List<String> jsonObjects = new ArrayList<>();
         String token = Token.invoke();
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append(MessageFormat.format("event.json?access_token={0}",token));
