@@ -16,8 +16,6 @@ import java.util.List;
 @RequestMapping("/api/performance")
 public class PerformanceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PerformanceController.class);
-
     @Autowired
     PerformanceService performanceService;
 
@@ -46,7 +44,7 @@ public class PerformanceController {
     }
 
     @GetMapping
-    public List<Performance> getAllPerformances() {
+    public List<Performance> getAllPerformances() throws InterruptedException {
 
         return performanceService.getAllPerformances();
 

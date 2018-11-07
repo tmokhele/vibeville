@@ -3,7 +3,6 @@ package bttc.app.service.impl;
 import bttc.app.model.Event;
 import bttc.app.repository.EventRepository;
 import bttc.app.service.EventService;
-import bttc.app.util.ObjectMappingUtil;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class EventServiceImpl  implements EventService {
     }
 
     @Override
-    public List<Event> getAllEvents() {
+    public List<Event> getAllEvents()  {
         List<Event> events = new ArrayList<>();
         Gson g = new Gson();
         try {
@@ -51,6 +50,7 @@ public class EventServiceImpl  implements EventService {
             }
         } catch (ExecutionException | InterruptedException e) {
            logger.error(String.format("Exception getting all event: %s",e.getMessage()));
+            Thread.currentThread().interrupt();
         }
         return events;
     }

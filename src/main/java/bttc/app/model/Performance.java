@@ -1,9 +1,14 @@
 package bttc.app.model;
 
-public class Performance {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Performance implements Serializable {
 
     private long id;
     private String name;
+    List<Review> reviews = new ArrayList<>();
     private String performanceTime;
 
 
@@ -25,6 +30,14 @@ public class Performance {
 
     public String getPerformanceTime() {
         return performanceTime;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public void setPerformanceTime(String performanceTime) {

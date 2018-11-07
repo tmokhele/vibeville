@@ -2,7 +2,6 @@ package bttc.app.repository;
 
 import bttc.app.exception.RestTemplateResponseErrorHandler;
 import bttc.app.model.Event;
-import bttc.app.security.UserPrincipal;
 import bttc.app.util.Token;
 import com.google.gson.Gson;
 import org.json.JSONObject;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,7 +43,7 @@ public class EventRepository {
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append("event.json");
+        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",Token.invoke()));
         ResponseEntity<Event> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), event, Event.class);
         return userResponseEntity.getBody();
     }
@@ -72,10 +70,9 @@ public class EventRepository {
     }
     public CompletableFuture<List<String>> getAllEvents() {
         List<String> jsonObjects = new ArrayList<>();
-        String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",token));
+        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",Token.invoke()));
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
         map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));

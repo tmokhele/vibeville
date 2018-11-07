@@ -9,5 +9,5 @@ public interface EventService {
     Event addEvent(Event event);
     Event updateEvent(Event event);
     Event getEvent(String id);
-    List<Event> getAllEvents();
+    List<Event> getAllEvents() ;
 }

@@ -9,5 +9,5 @@ public interface PerformanceService {
     boolean addPerformances(List<Performance> performances);
     Performance updatePerformance(Performance performance);
     Performance getPerformance(String id);
-    List<Performance> getAllPerformances();
+    List<Performance> getAllPerformances() throws InterruptedException;
 }

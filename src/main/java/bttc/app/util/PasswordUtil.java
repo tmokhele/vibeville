@@ -8,10 +8,12 @@ import java.security.SecureRandom;
 
 public class PasswordUtil {
 
+    private static final String characterString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
+
     private PasswordUtil() {
     }
 
-    static char[] possibleCharacters = (new String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?")).toCharArray();
+    static char[] possibleCharacters = (characterString).toCharArray();
 
     public  static String generatePassword()
     {

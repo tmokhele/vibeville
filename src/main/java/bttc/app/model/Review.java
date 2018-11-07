@@ -1,8 +1,9 @@
 package bttc.app.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class EventReview {
+public class Review implements Serializable {
     private  long id;
     private int eventId;
     private String userId;

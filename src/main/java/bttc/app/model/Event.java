@@ -1,7 +1,9 @@
 package bttc.app.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Event  implements Serializable{
     private long id;
@@ -14,7 +16,8 @@ public class Event  implements Serializable{
     private int quantityInStock;
     private int rating;
     private String imageUrl;
-    private EventReview[] reviews;
+    List<Review> reviews = new ArrayList<>();
+    List<Performance> performances = new ArrayList<>();
     private int reviewsCount;
 
     public long getId() {
@@ -97,12 +100,20 @@ public class Event  implements Serializable{
         this.imageUrl = imageUrl;
     }
 
-    public EventReview[] getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(EventReview[] reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public List<Performance> getPerformances() {
+        return performances;
+    }
+
+    public void setPerformances(List<Performance> performances) {
+        this.performances = performances;
     }
 
     public int getReviewsCount() {

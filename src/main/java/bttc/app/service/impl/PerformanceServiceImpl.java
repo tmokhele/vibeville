@@ -59,6 +59,7 @@ public class PerformanceServiceImpl implements PerformanceService {
             }
         } catch (ExecutionException | InterruptedException e) {
             logger.error(String.format("Exception getting all performances: %s", e.getMessage()));
+            Thread.currentThread().interrupt();
         }
         return performances;
     }

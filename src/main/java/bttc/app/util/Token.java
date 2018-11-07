@@ -14,12 +14,13 @@ public class Token {
     public static String invoke() {
         FireBaseAuthToken fireBaseAuthToken = new FireBaseAuthToken();
         try {
-            if (idToken ==null) {
+
                 idToken = fireBaseAuthToken.invoke();
-            }
+
         } catch (IOException e) {
             logger.error(String.format("Error getting token %s",e.getMessage()));
         }
+
         return idToken;
     }
 }

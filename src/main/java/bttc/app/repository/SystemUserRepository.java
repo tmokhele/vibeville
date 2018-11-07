@@ -56,7 +56,7 @@ public class SystemUserRepository {
         SystemUser user = gson.fromJson(gson.toJson(systemUser),SystemUser.class);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append("userInformation.json");
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",Token.invoke()));
         ResponseEntity<SystemUser> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), user, SystemUser.class);
         return userResponseEntity.getBody();
     }
@@ -82,7 +82,6 @@ public class SystemUserRepository {
     }
     public CompletableFuture<List<String>>  getAllSystemUsers()
     {
-        List<String> jsonObjects = new ArrayList<>();
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(apiUrl);

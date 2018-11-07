@@ -1,6 +1,5 @@
 package bttc.app.util;
 
-import bttc.app.model.User;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

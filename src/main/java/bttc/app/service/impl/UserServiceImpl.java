@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
                 systemUsers.add((SystemUser) ObjectMappingUtil.mapChats(s,SystemUser.class));
             }
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         return ResponseEntity.ok().body(new ApiResponse(true, "All User information retrieved ", systemUsers));
     }
