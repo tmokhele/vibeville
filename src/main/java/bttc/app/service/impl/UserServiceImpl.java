@@ -123,5 +123,10 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok().body(new ApiResponse(true,"Password change successful",userRepository.passwordChange(userPrincipal.getId(),newPassword)));
     }
 
+    @Override
+    public ResponseEntity<ApiResponse> saveRegistration(User signUpRequest) {
+        return ResponseEntity.ok().body(new ApiResponse(true,"Password change successful",null));
+    }
+
 
 }

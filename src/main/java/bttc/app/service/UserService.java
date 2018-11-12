@@ -12,4 +12,5 @@ public interface UserService {
     ResponseEntity<ApiResponse> saveLoginDetails(User user);
     ResponseEntity<ApiResponse> resetPassword(String email);
     ResponseEntity<ApiResponse> passwordChange(String newPassword);
+    ResponseEntity<ApiResponse> saveRegistration(User signUpRequest);
 }

@@ -27,11 +27,16 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User signUpRequest) {
+    public ResponseEntity<ApiResponse> signUp(@Valid @RequestBody User signUpRequest) {
         return userService.saveLoginDetails(signUpRequest);
     }
 
-    @PostMapping("/reset")
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User signUpRequest) {
+        return userService.saveRegistration(signUpRequest);
+    }
+
+        @PostMapping("/reset")
     public ResponseEntity<ApiResponse> resetPassword(@RequestBody String email) {
         return userService.resetPassword(email);
     }
