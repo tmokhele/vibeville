@@ -1,18 +1,28 @@
 version: '2'
 services:
   vibeville:
+    depends_on:
+    - "rabbitmq-user-registration"
     image: tmokhele/vibeville:latest
     stdin_open: true
     tty: true
     labels:
       io.rancher.container.pull_image: always
       id: vibeville
-  rabbitmq-user-registration:
-    image: rabbitmq:management
+  lb-vibeville:
+    image: rancher/lb-service-haproxy:v0.9.6
     ports:
+    - 80:80/tcp
+    - 8086:8086/tcp
     - 15672:15672/tcp
     - 5672:5672/tcp
     labels:
-      app: rabbitmq
+        io.rancher.container.agent.role: environmentAdmin,agent
+        io.rancher.container.agent_service.drain_provider: 'true'
+        io.rancher.container.create_agent: 'true'
+  rabbitmq-user-registration:
+    image: rabbitmq:management
+    labels:
+      id: rabbitmq
       io.rancher.container.pull_image: always
 
