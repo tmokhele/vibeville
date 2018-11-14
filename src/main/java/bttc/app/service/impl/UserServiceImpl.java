@@ -82,10 +82,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> getAllNewLoginRequests() {
+    public ResponseEntity getAllNewLoginRequests() {
         ResponseEntity<UserLogin[]> entity = restTemplate.exchange(vibevilleRabbitHost, HttpMethod.GET, null, UserLogin[].class);
-        logger.info("reg requests: "+entity.getBody().length);
-        return ResponseEntity.ok().body(new ApiResponse(true, "All User information retrieved ", entity.getBody()));
+        return ResponseEntity.ok().body(entity.getBody());
     }
 
     @Override
