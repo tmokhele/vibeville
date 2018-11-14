@@ -30,4 +30,13 @@ public class UserLogin implements Serializable {
     public void setReturnSecureToken(boolean returnSecureToken) {
         this.returnSecureToken = returnSecureToken;
     }
+
+    @Override
+    public String toString() {
+        return "UserLogin{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", returnSecureToken=" + returnSecureToken +
+                '}';
+    }
 }
