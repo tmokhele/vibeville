@@ -9,12 +9,14 @@ import bttc.app.service.UserService;
 import bttc.app.util.ObjectMappingUtil;
 import bttc.app.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Value("${vibeville.rabbit.host}")
+    private String vibevilleRabbitHost;
 
 
 
@@ -124,8 +132,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> saveRegistration(User signUpRequest) {
-        return ResponseEntity.ok().body(new ApiResponse(true,"Password change successful",null));
+    public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
+        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully",restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, User.class).getBody()));
     }
 
 

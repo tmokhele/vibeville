@@ -1,9 +1,6 @@
 package bttc.app.controller;
 
-import bttc.app.model.ApiResponse;
-import bttc.app.model.JwtAuthenticationResponse;
-import bttc.app.model.LoginRequest;
-import bttc.app.model.User;
+import bttc.app.model.*;
 import bttc.app.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User signUpRequest) {
-        return userService.saveRegistration(signUpRequest);
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody UserLogin userLogin) {
+        return userService.saveRegistration(userLogin);
     }
 
         @PostMapping("/reset")
