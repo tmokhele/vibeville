@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ApiResponse> getAllNewLoginRequests() {
-        ResponseEntity<? extends Set<UserLogin>> entity = restTemplate.getForEntity(vibevilleRabbitHost, (Class<? extends Set<UserLogin>>) Set.class);
+        ResponseEntity<UserLogin[]> entity = restTemplate.exchange(vibevilleRabbitHost, HttpMethod.GET, null, UserLogin[].class);
         return ResponseEntity.ok().body(new ApiResponse(true, "All User information retrieved ", entity.getBody()));
     }
 
