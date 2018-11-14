@@ -37,7 +37,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
             inputStringBuilder.append(line);
             line = bufferedReader.readLine();
         }
-        logger.error("Exception occurred :"+ line);
+        logger.error("Exception occurred :"+ inputStringBuilder.toString());
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
            new AppException(String.format("We are currently having technical problems: %s",inputStringBuilder.toString()));
@@ -57,6 +57,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         {
             throw  new AppException(String.format("User unauthorized: %s",inputStringBuilder.toString()));
         }else if (httpResponse.getStatusCode() == HttpStatus.BAD_REQUEST){
+            logger.error("bad request exception");
             throw new AppException(inputStringBuilder.toString());
         }
 
