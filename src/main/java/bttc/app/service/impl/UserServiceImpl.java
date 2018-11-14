@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -134,8 +135,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
-        UserLogin body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
+    public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest){
+        UserLogin body = null;
+        try{
+            body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
+        }catch (HttpClientErrorException ex)
+        {
+            logger.error("ex :"+ex.getResponseBodyAsString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false,ex.getResponseBodyAsString(),signUpRequest));
+        }
         logger.info("Registration Results: "+body);
         return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
     }
