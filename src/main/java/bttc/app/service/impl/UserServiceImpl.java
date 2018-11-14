@@ -8,6 +8,8 @@ import bttc.app.security.UserPrincipal;
 import bttc.app.service.UserService;
 import bttc.app.util.ObjectMappingUtil;
 import bttc.app.util.PasswordUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Value("${vibeville.rabbit.host}")
     private String vibevilleRabbitHost;
 
-
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public ResponseEntity<ApiResponse> addUser(SystemUser systemUser) {
@@ -133,7 +135,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
-        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully",restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody()));
+        UserLogin body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
+        logger.info("Registration Results: "+body);
+        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
     }
 
 

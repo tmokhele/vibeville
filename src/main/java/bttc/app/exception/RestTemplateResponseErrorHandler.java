@@ -2,6 +2,8 @@ package bttc.app.exception;
 
 import com.google.gson.Gson;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,8 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Component
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestTemplateResponseErrorHandler.class);
     @Override
     public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
 
@@ -26,6 +30,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
+        logger.error("Exception occurred :"+httpResponse.getStatusCode());
         StringBuilder inputStringBuilder = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getBody(), "UTF-8"));
         String line = bufferedReader.readLine();

@@ -88,8 +88,6 @@ e
 :
 
 Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
-]
--src/main/java/bttc/app/model/EventReview.java,8\6\86165443493f82b866d04a1fd5547fde787e824d
 W
 'src/main/java/bttc/app/model/Event.java,2\3\238692c60b7cacd7ca14cfc648f435c952e3245b
 ]
@@ -144,3 +142,10 @@ h
 8src/main/java/bttc/app/model/PasswordChangeResponse.java,8\e\8ebf8cc0f37ce49839fbf2e0c00ba59d55da7225
 g
 7src/main/java/bttc/app/model/PasswordResetResponse.java,e\c\ec0f40a3dd8d4f8cf80b3d3cbb7e294b4e2912f7
+C
+rancher-compose.yml,4\0\4000e7300ce7a8e383d94d6359599703e3e80c78
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+B
+docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a
