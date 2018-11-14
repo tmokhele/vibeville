@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -80,17 +81,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> getAllSystemUsers() {
-        List<SystemUser> systemUsers = new ArrayList<>();
-        CompletableFuture<List<String>> allSystemUsers = systemUserRepository.getAllSystemUsers();
-        try {
-            for (String s : allSystemUsers.get()) {
-                systemUsers.add((SystemUser) ObjectMappingUtil.mapChats(s,SystemUser.class));
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-        }
-        return ResponseEntity.ok().body(new ApiResponse(true, "All User information retrieved ", systemUsers));
+    public ResponseEntity<ApiResponse> getAllNewLoginRequests() {
+        ResponseEntity<? extends Set<UserLogin>> entity = restTemplate.getForEntity(vibevilleRabbitHost, (Class<? extends Set<UserLogin>>) Set.class);
+        return ResponseEntity.ok().body(new ApiResponse(true, "All User information retrieved ", entity.getBody()));
     }
 
     @Override

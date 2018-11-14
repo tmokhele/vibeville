@@ -7,7 +7,7 @@ public interface UserService {
     ResponseEntity<ApiResponse> addUser(SystemUser systemUser);
     ResponseEntity<ApiResponse> updateUser(SystemUser systemUser);
     ResponseEntity<ApiResponse> getUser(String userId);
-    ResponseEntity<ApiResponse> getAllSystemUsers();
+    ResponseEntity<ApiResponse> getAllNewLoginRequests();
     ResponseEntity<JwtAuthenticationResponse> existsByUsername(String usernameOrEmail, String password);
     ResponseEntity<ApiResponse> saveLoginDetails(User user);
     ResponseEntity<ApiResponse> resetPassword(String email);

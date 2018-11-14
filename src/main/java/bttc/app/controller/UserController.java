@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllUsers() {
-        return userService.getAllSystemUsers();
+    public ResponseEntity<ApiResponse> getAllNewLoginRequests() {
+        return userService.getAllNewLoginRequests();
     }
 }
