@@ -135,8 +135,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
-        UserLogin body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
-        logger.info("Registration Results: "+body);
+        UserLogin body = null;
+        try {
+             body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
+             logger.info("success");
+        }catch (Exception ex)
+        {
+            logger.error("exception: "+ex.getMessage());
+        }
         return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
     }
 
