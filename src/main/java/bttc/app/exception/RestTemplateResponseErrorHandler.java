@@ -30,7 +30,6 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
-        logger.error("Exception occurred :"+httpResponse.getStatusCode());
         StringBuilder inputStringBuilder = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getBody(), "UTF-8"));
         String line = bufferedReader.readLine();
@@ -38,6 +37,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
             inputStringBuilder.append(line);
             line = bufferedReader.readLine();
         }
+        logger.error("Exception occurred :"+ line);
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
            new AppException(String.format("We are currently having technical problems: %s",inputStringBuilder.toString()));

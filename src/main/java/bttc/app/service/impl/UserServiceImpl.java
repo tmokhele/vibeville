@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
              logger.info("success");
         }catch (Exception ex)
         {
-            logger.error("exception: "+ex.getMessage());
+            logger.error("exception: "+ex);
         }
         return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
     }
