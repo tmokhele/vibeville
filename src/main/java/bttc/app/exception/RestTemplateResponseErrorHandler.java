@@ -51,6 +51,8 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         else if (httpResponse.getStatusCode() == HttpStatus.UNAUTHORIZED)
         {
             throw  new AppException(String.format("User unauthorized: %s",inputStringBuilder.toString()));
+        }else if (httpResponse.getStatusCode() == HttpStatus.BAD_REQUEST){
+            throw new AppException(inputStringBuilder.toString());
         }
 
     }

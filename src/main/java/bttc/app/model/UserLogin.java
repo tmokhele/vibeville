@@ -1,6 +1,8 @@
 package bttc.app.model;
 
-public class UserLogin {
+import java.io.Serializable;
+
+public class UserLogin implements Serializable {
     private String email;
     private String password;
     private boolean returnSecureToken = true;

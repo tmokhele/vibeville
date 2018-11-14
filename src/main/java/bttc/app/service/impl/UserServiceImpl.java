@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
-        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully",restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, User.class).getBody()));
+        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully",restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody()));
     }
 
 
