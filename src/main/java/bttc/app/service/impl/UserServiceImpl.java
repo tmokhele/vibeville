@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -140,6 +141,12 @@ public class UserServiceImpl implements UserService {
         }
         logger.info("Registration Results: "+body);
         return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
+    }
+
+    @Override
+    public boolean deleteRequest(UserLogin userLogin) {
+        restTemplate.postForEntity(vibevilleRabbitHost+"/remove",userLogin,Object.class);
+        return true;
     }
 
 

@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class UserLogin implements Serializable {
     private String email;
     private String password;
+    private String name;
+    private String surname;
     private boolean returnSecureToken = true;
 
     public String getEmail() {
@@ -29,6 +31,22 @@ public class UserLogin implements Serializable {
 
     public void setReturnSecureToken(boolean returnSecureToken) {
         this.returnSecureToken = returnSecureToken;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     @Override

@@ -13,4 +13,5 @@ public interface UserService {
     ResponseEntity<ApiResponse> resetPassword(String email);
     ResponseEntity<ApiResponse> passwordChange(String newPassword);
     ResponseEntity<ApiResponse> saveRegistration(UserLogin userLogin) ;
+    boolean deleteRequest(UserLogin userLogin);
 }
