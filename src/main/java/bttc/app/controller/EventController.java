@@ -22,7 +22,8 @@ public class EventController {
     }
 
     @PutMapping()
-    public Event updateEvent(@RequestBody Event event) {
+    public Event updateEvent(@RequestBody List<Event> event) {
+
         return eventService.updateEvent(event);
     }
 

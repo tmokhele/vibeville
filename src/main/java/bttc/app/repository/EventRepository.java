@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 
 @Repository
 public class EventRepository {
@@ -48,12 +48,16 @@ public class EventRepository {
         return userResponseEntity.getBody();
     }
 
-    public Event updateEvent(Event event)
-    {
+    public Event updateEvent(Event event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append("event.json");
-        restTemplate.put(stringBuilder.toString(), event);
+        stringBuilder.append("event/");
+        stringBuilder.append(event.getId());
+        stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
+        JSONObject performances = new JSONObject();
+        performances.putOnce("performances",event.getPerformances());
+        Object object = new Gson().fromJson(performances.toString(),Object.class);
+        Object o = restTemplate.patchForObject(stringBuilder.toString(), object, Object.class);
         return event;
     }
     public Event getEvent(String id){
@@ -68,14 +72,15 @@ public class EventRepository {
         map.entrySet().forEach(e -> eventList.add(g.fromJson(JSONObject.valueToString(e.getValue()), Event.class)));
         return eventList.get(0);
     }
-    public CompletableFuture<List<String>> getAllEvents() {
-        List<String> jsonObjects = new ArrayList<>();
+    public Map<String,String> getAllEvents() {
+        Map<String,String> jsonObjects = new LinkedHashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append(MessageFormat.format("event.json?access_token={0}",Token.invoke()));
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
-        map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
-        return CompletableFuture.completedFuture(jsonObjects);
+
+        map.entrySet().forEach(e -> jsonObjects.put(e.getKey(),JSONObject.valueToString(e.getValue())));
+        return jsonObjects;
     }
 }

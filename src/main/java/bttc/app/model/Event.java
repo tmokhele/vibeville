@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Event  implements Serializable{
-    private long id;
+    private String id;
     private String name;
     private String location;
     private String category;
@@ -20,11 +20,11 @@ public class Event  implements Serializable{
     List<Performance> performances = new ArrayList<>();
     private int reviewsCount;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

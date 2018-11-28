@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.Map;
 
 @Service
-public class EventServiceImpl  implements EventService {
+public class EventServiceImpl implements EventService {
 
     private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
 
@@ -28,28 +27,34 @@ public class EventServiceImpl  implements EventService {
     }
 
     @Override
-    public Event updateEvent(Event event) {
+    public Event updateEvent(List<Event> event) {
+        for (Event e : event) {
 
-        return eventRepository.updateEvent(event);
+            eventRepository.updateEvent(e);
+
+        }
+        return null;
     }
 
     @Override
-    public Event getEvent(String id){
+    public Event getEvent(String id) {
 
         return eventRepository.getEvent(id);
     }
 
     @Override
-    public List<Event> getAllEvents()  {
+    public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
         Gson g = new Gson();
         try {
-            CompletableFuture<List<String>> allEvents = eventRepository.getAllEvents();
-            for (String s : allEvents.get()) {
-                events.add(g.fromJson(s, Event.class));
+            Map<String, String> allEvents = eventRepository.getAllEvents();
+            for (Map.Entry<String, String> entry : allEvents.entrySet()) {
+                Event event = g.fromJson(entry.getValue(), Event.class);
+                event.setId(entry.getKey());
+                events.add(event);
             }
-        } catch (ExecutionException | InterruptedException e) {
-           logger.error(String.format("Exception getting all event: %s",e.getMessage()));
+        } catch (Exception e) {
+            logger.error(String.format("Exception getting all event: %s", e.getMessage()));
             Thread.currentThread().interrupt();
         }
         return events;
