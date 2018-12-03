@@ -54,11 +54,7 @@ public class EventRepository {
         stringBuilder.append("event/");
         stringBuilder.append(event.getId());
         stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
-        JSONObject performances = new JSONObject();
-        performances.putOnce("performances",event.getPerformances());
-        Object object = new Gson().fromJson(performances.toString(),Object.class);
-        Object o = restTemplate.patchForObject(stringBuilder.toString(), object, Object.class);
-        return event;
+        return restTemplate.patchForObject(stringBuilder.toString(), event, Event.class);
     }
     public Event getEvent(String id){
         String token = Token.invoke();

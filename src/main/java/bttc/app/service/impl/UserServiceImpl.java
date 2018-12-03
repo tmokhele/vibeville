@@ -6,7 +6,6 @@ import bttc.app.repository.UserRepository;
 import bttc.app.security.JwtTokenProvider;
 import bttc.app.security.UserPrincipal;
 import bttc.app.service.UserService;
-import bttc.app.util.ObjectMappingUtil;
 import bttc.app.util.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -147,6 +139,11 @@ public class UserServiceImpl implements UserService {
     public boolean deleteRequest(UserLogin userLogin) {
         restTemplate.postForEntity(vibevilleRabbitHost+"/remove",userLogin,Object.class);
         return true;
+    }
+
+    @Override
+    public PasswordChangeResponse confirmPasswordReset(PasswordConfirmation passwordRequest) {
+        return userRepository.confirmPasswordRequest(passwordRequest);
     }
 
 

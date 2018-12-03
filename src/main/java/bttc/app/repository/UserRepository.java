@@ -117,4 +117,12 @@ public class UserRepository {
         ResponseEntity<PasswordChangeResponse> passwordResetResponseResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), new PasswordRequest(idToken,newPassword), PasswordChangeResponse.class);
         return passwordResetResponseResponseEntity.getBody();
     }
+
+    public PasswordChangeResponse confirmPasswordRequest(PasswordConfirmation passwordConfirmation) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apiUrl);
+        stringBuilder.append(MessageFormat.format("resetPassword?key={0}",passwordConfirmation.getApiKey()));
+        ResponseEntity<PasswordChangeResponse> passwordResetResponseResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), new PasswordConfirmation(passwordConfirmation.getOobCode(),passwordConfirmation.getNewPassword()), PasswordChangeResponse.class);
+        return passwordResetResponseResponseEntity.getBody();
+    }
 }

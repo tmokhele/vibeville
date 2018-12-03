@@ -33,13 +33,18 @@ public class AuthController {
         return userService.saveRegistration(userLogin);
     }
 
-        @PostMapping("/reset")
+    @PostMapping("/reset")
     public ResponseEntity<ApiResponse> resetPassword(@RequestBody String email) {
         return userService.resetPassword(email);
     }
+
+    @PostMapping("/confirm")
+    public ResponseEntity confirmPasswordReset(@RequestBody PasswordConfirmation passwordConfirmation) {
+        return ResponseEntity.ok().body(userService.confirmPasswordReset(passwordConfirmation));
+    }
+
     @PostMapping
-    public ResponseEntity<ApiResponse>updatePassword(@RequestBody String password)
-    {
+    public ResponseEntity<ApiResponse> updatePassword(@RequestBody String password) {
         return userService.passwordChange(password);
     }
 }
