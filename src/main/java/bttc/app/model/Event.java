@@ -14,6 +14,9 @@ public class Event  implements Serializable{
     private String description;
     private int unitPrice;
     private int quantityInStock;
+    private String vipamount;
+    private String generalamount;
+    private String earlyamount;
     private int rating;
     private String imageUrl;
     List<Review> reviews = new ArrayList<>();
@@ -122,5 +125,29 @@ public class Event  implements Serializable{
 
     public void setReviewsCount(int reviewsCount) {
         this.reviewsCount = reviewsCount;
+    }
+
+    public String getVipamount() {
+        return vipamount;
+    }
+
+    public void setVipamount(String vipamount) {
+        this.vipamount = vipamount;
+    }
+
+    public String getGeneralamount() {
+        return generalamount;
+    }
+
+    public void setGeneralamount(String generalamount) {
+        this.generalamount = generalamount;
+    }
+
+    public String getEarlyamount() {
+        return earlyamount;
+    }
+
+    public void setEarlyamount(String earlyamount) {
+        this.earlyamount = earlyamount;
     }
 }

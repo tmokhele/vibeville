@@ -10,6 +10,7 @@ public class Performance implements Serializable {
     private String name;
     List<Review> reviews = new ArrayList<>();
     private String performanceTime;
+    private String imageUrl;
 
 
     public long getId() {
@@ -42,5 +43,13 @@ public class Performance implements Serializable {
 
     public void setPerformanceTime(String performanceTime) {
         this.performanceTime = performanceTime;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
