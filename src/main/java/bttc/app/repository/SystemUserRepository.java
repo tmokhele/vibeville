@@ -88,7 +88,7 @@ public class SystemUserRepository {
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("profileInformation.json?access_token={0}",token));
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",token));
         URI uri = null;
         try {
              uri = new URI(stringBuilder.toString());
@@ -99,6 +99,7 @@ public class SystemUserRepository {
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(uri, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
         map.entrySet().forEach(e -> userList.add(gson.fromJson(JSONObject.valueToString(e.getValue()), User.class)));
+        logger.info("user list "+userList.size());
         return userList;
     }
 
