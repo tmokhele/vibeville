@@ -48,4 +48,9 @@ public class UserController {
         logger.info("deleted record");
         return ResponseEntity.ok().body(t);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllSystemUsers() {
+        return userService.getAllSystemUsers();
+    }
 }

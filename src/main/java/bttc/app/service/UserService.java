@@ -15,4 +15,5 @@ public interface UserService {
     ResponseEntity<ApiResponse> saveRegistration(UserLogin userLogin) ;
     boolean deleteRequest(UserLogin userLogin);
     PasswordChangeResponse confirmPasswordReset(PasswordConfirmation passwordRequest);
+    ResponseEntity getAllSystemUsers();
 }

@@ -2,6 +2,7 @@ package bttc.app.repository;
 
 import bttc.app.exception.RestTemplateResponseErrorHandler;
 import bttc.app.model.SystemUser;
+import bttc.app.model.User;
 import bttc.app.util.Token;
 import bttc.app.util.UserSerializer;
 import com.google.gson.Gson;
@@ -80,12 +81,14 @@ public class SystemUserRepository {
         }
         return userList.get(0);
     }
-    public CompletableFuture<List<String>>  getAllSystemUsers()
+    public List<User>  getAllSystemUsers()
     {
+        List<User> userList = new ArrayList<>();
+        Gson gson = new Gson();
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(apiUrl);
-        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",token));
+        stringBuilder.append(dbUrl);
+        stringBuilder.append(MessageFormat.format("profileInformation.json?access_token={0}",token));
         URI uri = null;
         try {
              uri = new URI(stringBuilder.toString());
@@ -93,11 +96,10 @@ public class SystemUserRepository {
             e.printStackTrace();
         }
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
-//        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
-//        map.entrySet().forEach(e -> jsonObjects.add(JSONObject.valueToString(e.getValue())));
-//        return CompletableFuture.completedFuture(jsonObjects);
-        return null;
+        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(uri, Object.class);
+        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
+        map.entrySet().forEach(e -> userList.add(gson.fromJson(JSONObject.valueToString(e.getValue()), User.class)));
+        return userList;
     }
 
 

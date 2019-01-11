@@ -146,5 +146,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.confirmPasswordRequest(passwordRequest);
     }
 
+    public ResponseEntity getAllSystemUsers() {
+        return ResponseEntity.ok(systemUserRepository.getAllSystemUsers());
+    }
+
 
 }
