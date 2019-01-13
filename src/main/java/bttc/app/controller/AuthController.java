@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> signUp(@Valid @RequestBody User signUpRequest) {
+    public ResponseEntity<ApiResponse> signUp(@Valid @RequestBody SystemUser signUpRequest) {
         return userService.saveLoginDetails(signUpRequest);
     }
 

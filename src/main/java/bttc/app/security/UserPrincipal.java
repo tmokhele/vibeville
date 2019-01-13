@@ -1,12 +1,14 @@
 package bttc.app.security;
 
 
+import bttc.app.model.SystemUser;
 import bttc.app.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -36,16 +38,15 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority(role.getName().name())
-        ).collect(Collectors.toList());
+    public static UserPrincipal create(SystemUser user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
         return new UserPrincipal(
                 user.getUid(),
                 user.getName(),
-                user.getUsername(),
-                user.getEmail(),
+                user.getEmailAddress(),
+                user.getEmailAddress(),
                 user.getPassword(),
                 authorities
         );

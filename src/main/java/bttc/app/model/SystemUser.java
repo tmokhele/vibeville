@@ -12,6 +12,16 @@ public class SystemUser {
     private boolean twitter;
     private boolean faceBook;
     private boolean events;
+    private String profilePicURL;
+
+    public String getProfilePicURL() {
+        return profilePicURL;
+    }
+
+    public void setProfilePicURL(String profilePicURL) {
+        this.profilePicURL = profilePicURL;
+    }
+
     public String getUid() {
         return uid;
     }

@@ -63,9 +63,10 @@ public class UserRepository {
     public User getAccountInfo(String idToken, String uid) {
         StringBuilder stringBuilder = new StringBuilder();
         List<User> userList = new ArrayList<>();
+        String token = bttc.app.util.Token.invoke();
         Gson g = new Gson();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("userInformation.json?auth={0}&orderBy=\"uid\"&equalTo=\"{1}\"", idToken, uid));
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}&orderBy=\"uid\"&equalTo=\"{1}\"", token, uid));
         ResponseEntity<Object> forEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) forEntity.getBody();
         map.entrySet().forEach(e -> userList.add(g.fromJson(JSONObject.valueToString(e.getValue()), User.class)));

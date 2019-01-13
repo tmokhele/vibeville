@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ApiResponse> addNewUser(@RequestBody SystemUser user) {
 
-        return userService.addUser(user);
+        return userService.saveLoginDetails(user);
     }
 
     @PutMapping
