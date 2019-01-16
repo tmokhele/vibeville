@@ -66,7 +66,7 @@ public class SystemUserRepository {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("userInformation/");
-        stringBuilder.append(systemUser.getUid());
+        stringBuilder.append(systemUser.getId());
         stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
         return restTemplate.patchForObject(stringBuilder.toString(), systemUser, SystemUser.class);
     }
@@ -83,7 +83,9 @@ public class SystemUserRepository {
         ResponseEntity<Object> forEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) forEntity.getBody();
         for (Map.Entry<String, Object> e : map.entrySet()) {
-            userList.add(g.fromJson(JSONObject.valueToString(e.getValue()), SystemUser.class));
+            SystemUser e1 = g.fromJson(JSONObject.valueToString(e.getValue()), SystemUser.class);
+            e1.setId(e.getKey());
+            userList.add(e1);
         }
         return userList.get(0);
     }
