@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<ApiResponse> updateUser(SystemUser systemUser)
     {
+        logger.info("edit user");
         return ResponseEntity.ok().body(new ApiResponse(true,"User info updated successfully",systemUserRepository.updateUser(systemUser)));
     }
 

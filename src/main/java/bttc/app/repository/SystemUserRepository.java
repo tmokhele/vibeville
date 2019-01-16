@@ -62,6 +62,7 @@ public class SystemUserRepository {
     }
    public SystemUser updateUser(SystemUser systemUser)
     {
+        logger.info("edit 2");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("userInformation/");
