@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 @Repository
 public class SystemUserRepository {
@@ -63,9 +62,15 @@ public class SystemUserRepository {
     }
    public SystemUser updateUser(SystemUser systemUser)
     {
-
-        return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dbUrl);
+        stringBuilder.append("userInformation/");
+        stringBuilder.append(systemUser.getUid());
+        stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
+        return restTemplate.patchForObject(stringBuilder.toString(), systemUser, SystemUser.class);
     }
+
+
     public SystemUser getUser(String userId)
     {
         String token = Token.invoke();
