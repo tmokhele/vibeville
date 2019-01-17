@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
         userPrincipal.setPassword(password);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        accountInfo.setUid(firebaseAuthResponse.getLocalId());
         return ResponseEntity.ok().body(new JwtAuthenticationResponse(tokenProvider.generateToken(authentication),accountInfo));
     }
 
