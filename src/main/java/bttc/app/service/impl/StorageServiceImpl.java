@@ -3,15 +3,14 @@ package bttc.app.service.impl;
 import bttc.app.model.FileUpload;
 import bttc.app.service.StorageService;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.http.HttpTransportOptions;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,24 +19,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public boolean uploadFiles(List<FileUpload> fileUploads) throws IOException {
-        InputStream serviceAccount = TypeReference.class.getResourceAsStream("/serviceAccountKey.json");
-
-        GoogleCredentials googleCred = GoogleCredentials.fromStream(serviceAccount);
-        GoogleCredentials scoped = googleCred.createScoped(
-                Arrays.asList(
-                        "https://www.googleapis.com/auth/firebase.database",
-                        "https://www.googleapis.com/auth/userinfo.email",
-                        "https://www.googleapis.com/auth/devstorage.full_control"
-                )
-        );
-        HttpTransportOptions transportOptions = StorageOptions.getDefaultHttpTransportOptions();
-        transportOptions = transportOptions.toBuilder().setConnectTimeout(60000).setReadTimeout(60000)
-                .build();
-        StorageOptions storageOptions = StorageOptions.newBuilder()
-                .setCredentials(scoped)
-                .setTransportOptions(transportOptions)
-                .setProjectId("bttc-cb6f6")
-                .build();
+        StorageOptions storageOptions = getStorageOptions();
         Storage s = storageOptions.getService();
         for (FileUpload fileUpload:fileUploads) {
             BlobId blobId = BlobId.of("bttc-cb6f6.appspot.com", String.format("%s/%s",fileUpload.getDocName(),fileUpload.getFileName()));
@@ -47,5 +29,40 @@ public class StorageServiceImpl implements StorageService {
         return true;
 
     }
+
+    @Override
+    public List<byte[]> getFiles(String documentType) throws IOException {
+        StorageOptions storageOptions = getStorageOptions();
+        Storage s = storageOptions.getService();
+        Bucket bucket = s.get("bttc-cb6f6.appspot.com");
+        Page<Blob> image = bucket.list(Storage.BlobListOption.prefix(documentType));
+        Iterable<Blob> blobs = image.iterateAll();
+        List<byte[]> bytes = new ArrayList<>();
+        blobs.forEach( b ->{
+            if (b.getContent().length>0)
+            bytes.add( b.getContent());
+        });
+        return bytes;
+    }
+
+    private StorageOptions getStorageOptions() throws IOException {
+        InputStream serviceAccount = TypeReference.class.getResourceAsStream("/serviceAccountKey.json");
+
+        GoogleCredentials googleCred = GoogleCredentials.fromStream(serviceAccount);
+        GoogleCredentials scoped = googleCred.createScoped(
+                Arrays.asList(
+                        "https://www.googleapis.com/auth/devstorage.full_control"
+                )
+        );
+        HttpTransportOptions transportOptions = StorageOptions.getDefaultHttpTransportOptions();
+        transportOptions = transportOptions.toBuilder().setConnectTimeout(60000).setReadTimeout(60000)
+                .build();
+        return StorageOptions.newBuilder()
+                .setCredentials(scoped)
+                .setTransportOptions(transportOptions)
+                .setProjectId("bttc-cb6f6")
+                .build();
+    }
+
 
 }

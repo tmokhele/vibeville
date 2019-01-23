@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StorageService {
   boolean  uploadFiles(List<FileUpload> fileUploads) throws IOException;
+  List<byte[]> getFiles(String documentType) throws IOException;
 }
