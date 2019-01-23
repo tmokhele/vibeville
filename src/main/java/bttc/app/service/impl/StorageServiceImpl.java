@@ -10,10 +10,6 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -44,32 +40,12 @@ public class StorageServiceImpl implements StorageService {
                 .build();
         Storage s = storageOptions.getService();
         for (FileUpload fileUpload:fileUploads) {
-            BlobId blobId = BlobId.of("bttc-cb6f6.appspot.com", String.format("imgages/%s",fileUpload.getFileName()));
+            BlobId blobId = BlobId.of("bttc-cb6f6.appspot.com", String.format("%s/%s",fileUpload.getDocName(),fileUpload.getFileName()));
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
-            s.create(blobInfo, getBytesFromFile(fileUpload.getFile()));
+            s.create(blobInfo, fileUpload.getFile());
         }
         return true;
 
     }
 
-    private byte[] getBytesFromFile(@NotNull File file) throws IOException {
-        long length = file.length();
-        byte[] bytes = new byte[(int)length];
-        int offset = 0;
-        int numRead = 0;
-
-        InputStream is = new FileInputStream(file);
-        try {
-            while (offset < bytes.length
-                    && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-                offset += numRead;
-            }
-        } finally {
-            is.close();
-        }
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-        return bytes;
-    }
 }

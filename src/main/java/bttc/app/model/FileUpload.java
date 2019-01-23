@@ -1,12 +1,12 @@
 package bttc.app.model;
 
-import java.io.File;
+import java.io.Serializable;
 
-public class FileUpload {
+public class FileUpload implements Serializable {
     private String docName;
     private String docDescription;
     private String fileName;
-    private File file;
+    private byte [] file;
 
     public String getDocName() {
         return docName;
@@ -32,11 +32,11 @@ public class FileUpload {
         this.fileName = fileName;
     }
 
-    public File getFile() {
+    public byte[] getFile() {
         return file;
     }
 
-    public void setFile(File file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 }
