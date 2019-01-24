@@ -7,6 +7,7 @@ public class FileUpload implements Serializable {
     private String docDescription;
     private String fileName;
     private byte [] file;
+    private String fileType;
 
     public String getDocName() {
         return docName;
@@ -38,5 +39,13 @@ public class FileUpload implements Serializable {
 
     public void setFile(byte[] file) {
         this.file = file;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

@@ -10,9 +10,7 @@ import com.google.cloud.storage.*;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -23,7 +21,7 @@ public class StorageServiceImpl implements StorageService {
         Storage s = storageOptions.getService();
         for (FileUpload fileUpload:fileUploads) {
             BlobId blobId = BlobId.of("bttc-cb6f6.appspot.com", String.format("%s/%s",fileUpload.getDocName(),fileUpload.getFileName()));
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(fileUpload.getFileType()).build();
             s.create(blobInfo, fileUpload.getFile());
         }
         return true;
@@ -31,16 +29,16 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public List<byte[]> getFiles(String documentType) throws IOException {
+    public  Map<String, String> getFiles(String documentType) throws IOException {
         StorageOptions storageOptions = getStorageOptions();
         Storage s = storageOptions.getService();
         Bucket bucket = s.get("bttc-cb6f6.appspot.com");
         Page<Blob> image = bucket.list(Storage.BlobListOption.prefix(documentType));
         Iterable<Blob> blobs = image.iterateAll();
-        List<byte[]> bytes = new ArrayList<>();
+        Map<String, String> bytes = new HashMap<>();
         blobs.forEach( b ->{
-            if (b.getContent().length>0)
-            bytes.add( b.getContent());
+            if (!b.getSelfLink().isEmpty())
+            bytes.put(b.getName(), b.getSelfLink());
         });
         return bytes;
     }

@@ -32,6 +32,7 @@ public class ObjectMappingUtil {
                 fileUpload.setDocDescription((String) linkedHashMap.get("docdescription"));
                 String filename = (String) linkedHashMap.get("filename");
                 fileUpload.setFileName(filename);
+                fileUpload.setFileType((String) linkedHashMap.get("filetype"));
 
                 for (MultipartFile multipartFile : file) {
                     if (multipartFile.getOriginalFilename().equalsIgnoreCase(filename)) {

@@ -2,7 +2,6 @@ package bttc.app.repository;
 
 import bttc.app.exception.RestTemplateResponseErrorHandler;
 import bttc.app.model.SystemUser;
-import bttc.app.model.User;
 import bttc.app.util.Token;
 import bttc.app.util.UserSerializer;
 import com.google.gson.Gson;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -80,35 +77,29 @@ public class SystemUserRepository {
         Gson g = new Gson();
         stringBuilder.append(dbUrl);
         stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}&orderBy=\"uid\"&equalTo=\"{1}\"", token, userId));
-        ResponseEntity<Object> forEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
-        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) forEntity.getBody();
-        for (Map.Entry<String, Object> e : map.entrySet()) {
-            SystemUser e1 = g.fromJson(JSONObject.valueToString(e.getValue()), SystemUser.class);
-            e1.setId(e.getKey());
-            userList.add(e1);
-        }
+        getObjects(userList, g, stringBuilder);
         return userList.get(0);
     }
-    public List<User>  getAllSystemUsers()
+    public List<SystemUser>  getAllSystemUsers()
     {
-        List<User> userList = new ArrayList<>();
+        List<SystemUser> userList = new ArrayList<>();
         Gson gson = new Gson();
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",token));
-        URI uri = null;
-        try {
-             uri = new URI(stringBuilder.toString());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(uri, Object.class);
-        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
-        map.entrySet().forEach(e -> userList.add(gson.fromJson(JSONObject.valueToString(e.getValue()), User.class)));
-        logger.info("user list "+userList.size());
+        getObjects(userList, gson, stringBuilder);
         return userList;
+    }
+
+    private void getObjects(List<SystemUser> userList, Gson gson, StringBuilder stringBuilder) {
+        ResponseEntity<Object> responseEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
+        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            SystemUser e1 = gson.fromJson(JSONObject.valueToString(e.getValue()), SystemUser.class);
+            e1.setId(e.getKey());
+            userList.add(e1);
+        }
     }
 
 
