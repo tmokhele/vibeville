@@ -4,6 +4,7 @@ import bttc.app.model.ApiResponse;
 import bttc.app.model.SystemUser;
 import bttc.app.model.UserLogin;
 import bttc.app.service.UserService;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,19 @@ public class UserController {
     }
 
     @PostMapping("/remove")
-    public ResponseEntity deleteById(@RequestBody UserLogin userLogin){
+    public ResponseEntity deleteById(@RequestBody UserLogin userLogin) {
         boolean t = userService.deleteRequest(userLogin);
         logger.info("deleted record");
         return ResponseEntity.ok().body(t);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity deleteUser(@RequestBody SystemUser systemUser) throws FirebaseAuthException {
+        boolean infoDeleted = userService.deleteUserInformation(systemUser);
+        if (infoDeleted) {
+            userService.deleteUserLogin(systemUser.getUid());
+        }
+        return ResponseEntity.ok().body(new ApiResponse(true,"User Deleted Successfully",null));
     }
 
     @GetMapping("/all")

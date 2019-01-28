@@ -37,8 +37,8 @@ public class StorageServiceImpl implements StorageService {
         Iterable<Blob> blobs = image.iterateAll();
         Map<String, String> bytes = new HashMap<>();
         blobs.forEach( b ->{
-            if (!b.getSelfLink().isEmpty())
-            bytes.put(b.getName(), b.getSelfLink());
+            if (!b.getMediaLink().isEmpty())
+            bytes.put(b.getName(), b.getMediaLink());
         });
         return bytes;
     }

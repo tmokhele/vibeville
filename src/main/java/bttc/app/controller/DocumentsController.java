@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/files")
@@ -37,10 +38,12 @@ public class DocumentsController {
 
     @GetMapping("/{documentType}")
     public ResponseEntity getFiles(@PathVariable String documentType) {
-        try {
-           return ResponseEntity.ok(storageService.getFiles(documentType));
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, e.getMessage(), null));
+        Map<String, String> files = new HashMap<>();
+        if (documentType.equalsIgnoreCase("video")) {
+           files  = ObjectMappingUtil.getVideo();
+        }else {
+            files = ObjectMappingUtil.getMocked();
         }
+        return ResponseEntity.ok(files);
     }
 }

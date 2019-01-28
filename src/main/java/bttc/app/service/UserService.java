@@ -1,6 +1,7 @@
 package bttc.app.service;
 
 import bttc.app.model.*;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
@@ -15,4 +16,6 @@ public interface UserService {
     boolean deleteRequest(UserLogin userLogin);
     PasswordChangeResponse confirmPasswordReset(PasswordConfirmation passwordRequest);
     ResponseEntity getAllSystemUsers();
+    boolean deleteUserInformation(SystemUser systemUser);
+    boolean deleteUserLogin(String uid) throws FirebaseAuthException;
 }

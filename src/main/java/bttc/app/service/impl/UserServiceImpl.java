@@ -6,6 +6,8 @@ import bttc.app.repository.UserRepository;
 import bttc.app.security.JwtTokenProvider;
 import bttc.app.security.UserPrincipal;
 import bttc.app.service.UserService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +46,16 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
-
     @Override
-    public ResponseEntity<ApiResponse> updateUser(SystemUser systemUser)
-    {
+    public ResponseEntity<ApiResponse> updateUser(SystemUser systemUser) {
         logger.info("edit user");
-        return ResponseEntity.ok().body(new ApiResponse(true,"User info updated successfully",systemUserRepository.updateUser(systemUser)));
+        return ResponseEntity.ok().body(new ApiResponse(true, "User info updated successfully", systemUserRepository.updateUser(systemUser)));
     }
 
     @Override
     public ResponseEntity<ApiResponse> getUser(String userId) {
 
-        return ResponseEntity.ok(new ApiResponse(true,"User retrieved successfully",systemUserRepository.getUser(userId)));
+        return ResponseEntity.ok(new ApiResponse(true, "User retrieved successfully", systemUserRepository.getUser(userId)));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         accountInfo.setUid(firebaseAuthResponse.getLocalId());
-        return ResponseEntity.ok().body(new JwtAuthenticationResponse(tokenProvider.generateToken(authentication),accountInfo));
+        return ResponseEntity.ok().body(new JwtAuthenticationResponse(tokenProvider.generateToken(authentication), accountInfo));
     }
 
     @Override
@@ -91,42 +91,40 @@ public class UserServiceImpl implements UserService {
         signUpRequest.setUid(firebaseUser.getLocalId());
         try {
             systemUserRepository.addUser(signUpRequest);
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             userRepository.deleteUser(firebaseUser.getIdToken());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false,"User not registered successfully",signUpRequest));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "User not registered successfully", signUpRequest));
         }
-        return ResponseEntity.ok().body(new ApiResponse(true, "User registered successfully",signUpRequest));
+        return ResponseEntity.ok().body(new ApiResponse(true, "User registered successfully", signUpRequest));
     }
 
     @Override
     public ResponseEntity<ApiResponse> resetPassword(String email) {
-        return ResponseEntity.ok().body(new ApiResponse(true,"Password reset successful",userRepository.resetPassword(email)));
+        return ResponseEntity.ok().body(new ApiResponse(true, "Password reset successful", userRepository.resetPassword(email)));
     }
 
     @Override
     public ResponseEntity<ApiResponse> passwordChange(String newPassword) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok().body(new ApiResponse(true,"Password change successful",userRepository.passwordChange(userPrincipal.getId(),newPassword)));
+        return ResponseEntity.ok().body(new ApiResponse(true, "Password change successful", userRepository.passwordChange(userPrincipal.getId(), newPassword)));
     }
 
     @Override
-    public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest){
+    public ResponseEntity<ApiResponse> saveRegistration(UserLogin signUpRequest) {
         UserLogin body = null;
-        try{
+        try {
             body = restTemplate.postForEntity(vibevilleRabbitHost, signUpRequest, UserLogin.class).getBody();
-        }catch (HttpClientErrorException ex)
-        {
-            logger.error("ex :"+ex.getResponseBodyAsString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false,ex.getResponseBodyAsString(),signUpRequest));
+        } catch (HttpClientErrorException ex) {
+            logger.error("ex :" + ex.getResponseBodyAsString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, ex.getResponseBodyAsString(), signUpRequest));
         }
-        logger.info("Registration Results: "+body);
-        return ResponseEntity.ok().body(new ApiResponse(true,"User registered successfully", body));
+        logger.info("Registration Results: " + body);
+        return ResponseEntity.ok().body(new ApiResponse(true, "User registered successfully", body));
     }
 
     @Override
     public boolean deleteRequest(UserLogin userLogin) {
-        restTemplate.postForEntity(vibevilleRabbitHost+"/remove",userLogin,Object.class);
+        restTemplate.postForEntity(vibevilleRabbitHost + "/remove", userLogin, Object.class);
         return true;
     }
 
@@ -137,6 +135,17 @@ public class UserServiceImpl implements UserService {
 
     public ResponseEntity getAllSystemUsers() {
         return ResponseEntity.ok(systemUserRepository.getAllSystemUsers());
+    }
+
+    @Override
+    public boolean deleteUserInformation(SystemUser systemUser) {
+        return systemUserRepository.deleteUserInformation(systemUser);
+    }
+
+    @Override
+    public boolean deleteUserLogin(String uid) throws FirebaseAuthException {
+        FirebaseAuth.getInstance().deleteUser(uid);
+        return true;
     }
 
 

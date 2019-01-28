@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class ObjectMappingUtil {
 
@@ -47,5 +45,19 @@ public class ObjectMappingUtil {
             e.printStackTrace();
         }
         return files;
+    }
+
+    public static Map<String,String> getMocked()
+    {
+        Map<String,String> stringMap = new HashMap<>();
+        stringMap.put("image/hhp.jfif","https://www.googleapis.com/download/storage/v1/b/bttc-cb6f6.appspot.com/o/image%2Fhhp.jfif?generation=1548320903452185&alt=media");
+        stringMap.put("image/thabsie.jfif","https://www.googleapis.com/download/storage/v1/b/bttc-cb6f6.appspot.com/o/image%2Fthabsie.jfif?generation=1548245065968292&alt=media");
+        return stringMap;
+    }
+
+    public static Map<String, String> getVideo() {
+        Map<String,String> stringMap = new HashMap<>();
+        stringMap.put("image/hhp.jfif","https://www.googleapis.com/download/storage/v1/b/bttc-cb6f6.appspot.com/o/video%2FBigBuckBunny_512kb.mp4?generation=1548324285980240&alt=media");
+        return stringMap;
     }
 }

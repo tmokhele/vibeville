@@ -59,7 +59,6 @@ public class SystemUserRepository {
     }
    public SystemUser updateUser(SystemUser systemUser)
     {
-        logger.info("edit 2");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("userInformation/");
@@ -73,9 +72,9 @@ public class SystemUserRepository {
     {
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dbUrl);
         List<SystemUser> userList = new ArrayList<>();
         Gson g = new Gson();
-        stringBuilder.append(dbUrl);
         stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}&orderBy=\"uid\"&equalTo=\"{1}\"", token, userId));
         getObjects(userList, g, stringBuilder);
         return userList.get(0);
@@ -103,4 +102,12 @@ public class SystemUserRepository {
     }
 
 
+    public boolean deleteUserInformation(SystemUser systemUser) {
+        String token = Token.invoke();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dbUrl);
+        stringBuilder.append(MessageFormat.format("userInformation/{0}.json?access_token={1}", systemUser.getId(),token ));
+        restTemplate.delete(stringBuilder.toString());
+        return true;
+    }
 }
