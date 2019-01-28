@@ -37,11 +37,15 @@ public class DocumentsController {
     }
 
     @GetMapping("/{documentType}")
-    public ResponseEntity getFiles(@PathVariable String documentType) {
-        Map<String, String> files = new HashMap<>();
+    public ResponseEntity getFiles(@PathVariable String documentType)  {
+        Map<String, String> files ;
         if (documentType.equalsIgnoreCase("video")) {
            files  = ObjectMappingUtil.getVideo();
-        }else {
+        } else  if(documentType.equalsIgnoreCase("audio"))
+        {
+            files = ObjectMappingUtil.getAudio();
+        }
+        else {
             files = ObjectMappingUtil.getMocked();
         }
         return ResponseEntity.ok(files);
