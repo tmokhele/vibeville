@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -39,24 +41,26 @@ public class EventRepository {
                 .build();
     }
 
-    public Event addEvent(Event event)
-    {
+    @CachePut("events")
+    public Event addEvent(Event event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",Token.invoke()));
+        stringBuilder.append(MessageFormat.format("event.json?access_token={0}", Token.invoke()));
         ResponseEntity<Event> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), event, Event.class);
         return userResponseEntity.getBody();
     }
 
+    @CachePut("events")
     public Event updateEvent(Event event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("event/");
         stringBuilder.append(event.getId());
-        stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
+        stringBuilder.append(MessageFormat.format(".json?access_token={0}", Token.invoke()));
         return restTemplate.patchForObject(stringBuilder.toString(), event, Event.class);
     }
-    public Event getEvent(String id){
+
+    public Event getEvent(String id) {
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         List<Event> eventList = new ArrayList<>();
@@ -68,15 +72,17 @@ public class EventRepository {
         map.entrySet().forEach(e -> eventList.add(g.fromJson(JSONObject.valueToString(e.getValue()), Event.class)));
         return eventList.get(0);
     }
-    public Map<String,String> getAllEvents() {
-        Map<String,String> jsonObjects = new LinkedHashMap<>();
+
+    @Cacheable("events")
+    public Map<String, String> getAllEvents() {
+        Map<String, String> jsonObjects = new LinkedHashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("event.json?access_token={0}",Token.invoke()));
+        stringBuilder.append(MessageFormat.format("event.json?access_token={0}", Token.invoke()));
         ResponseEntity<Object> responseEntity = restTemplate.getForEntity(stringBuilder.toString(), Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) responseEntity.getBody();
 
-        map.entrySet().forEach(e -> jsonObjects.put(e.getKey(),JSONObject.valueToString(e.getValue())));
+        map.entrySet().forEach(e -> jsonObjects.put(e.getKey(), JSONObject.valueToString(e.getValue())));
         return jsonObjects;
     }
 }

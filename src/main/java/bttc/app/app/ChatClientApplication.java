@@ -2,8 +2,8 @@ package bttc.app.app;
 
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -15,6 +15,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @ComponentScan("bttc.app")
+@EnableCaching
 public class ChatClientApplication {
 
     @Bean

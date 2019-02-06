@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -45,31 +47,31 @@ public class SystemUserRepository {
                 .build();
     }
 
-    public SystemUser addUser(SystemUser systemUser)
-    {
+    @CachePut("users")
+    public SystemUser addUser(SystemUser systemUser) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(SystemUser.class, new UserSerializer())
                 .create();
-        SystemUser user = gson.fromJson(gson.toJson(systemUser),SystemUser.class);
+        SystemUser user = gson.fromJson(gson.toJson(systemUser), SystemUser.class);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",Token.invoke()));
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}", Token.invoke()));
         ResponseEntity<SystemUser> userResponseEntity = restTemplate.postForEntity(stringBuilder.toString(), user, SystemUser.class);
         return userResponseEntity.getBody();
     }
-   public SystemUser updateUser(SystemUser systemUser)
-    {
+
+    @CachePut("users")
+    public SystemUser updateUser(SystemUser systemUser) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
         stringBuilder.append("userInformation/");
         stringBuilder.append(systemUser.getId());
-        stringBuilder.append(MessageFormat.format(".json?access_token={0}",Token.invoke()));
+        stringBuilder.append(MessageFormat.format(".json?access_token={0}", Token.invoke()));
         return restTemplate.patchForObject(stringBuilder.toString(), systemUser, SystemUser.class);
     }
 
 
-    public SystemUser getUser(String userId)
-    {
+    public SystemUser getUser(String userId) {
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
@@ -79,14 +81,15 @@ public class SystemUserRepository {
         getObjects(userList, g, stringBuilder);
         return userList.get(0);
     }
-    public List<SystemUser>  getAllSystemUsers()
-    {
+
+    @Cacheable("users")
+    public List<SystemUser> getAllSystemUsers() {
         List<SystemUser> userList = new ArrayList<>();
         Gson gson = new Gson();
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}",token));
+        stringBuilder.append(MessageFormat.format("userInformation.json?access_token={0}", token));
         getObjects(userList, gson, stringBuilder);
         return userList;
     }
@@ -106,7 +109,7 @@ public class SystemUserRepository {
         String token = Token.invoke();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
-        stringBuilder.append(MessageFormat.format("userInformation/{0}.json?access_token={1}", systemUser.getId(),token ));
+        stringBuilder.append(MessageFormat.format("userInformation/{0}.json?access_token={1}", systemUser.getId(), token));
         restTemplate.delete(stringBuilder.toString());
         return true;
     }
