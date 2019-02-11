@@ -11,4 +11,5 @@ public interface StorageService {
   List<String> upLoadCloudinaryFiles(List<FileUpload> fileUploads);
   Map<String, String> getFiles(String documentType) throws IOException;
   Map<String, String> getCloudinaryFiles(String documentType);
+  boolean deleteFile(String url);
 }

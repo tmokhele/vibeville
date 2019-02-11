@@ -6,6 +6,7 @@ import bttc.app.service.StorageService;
 import bttc.app.util.ObjectMappingUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +29,11 @@ public class DocumentsController {
     public ResponseEntity uploadFiles(@RequestPart("files") List<MultipartFile> file, @RequestPart("fileInfo") String fileInfo) {
         List<FileUpload> files = new ArrayList<>();
         return ResponseEntity.ok(new ApiResponse(true, "Files Uploaded Successfully", storageService.upLoadCloudinaryFiles(ObjectMappingUtil.mapFileUploadList(file, fileInfo, files))));
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity deleteFile(@RequestBody String media){
+        return ResponseEntity.status(HttpStatus.OK).body(storageService.deleteFile(media));
     }
 
     @GetMapping("/{documentType}")

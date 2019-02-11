@@ -79,11 +79,24 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public Map<String, String> getCloudinaryFiles(String documentType) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(MessageFormat.format("{0}/{1}", vibevilleMediaManagerHost, documentType));
+        StringBuilder stringBuilder = getUrl(documentType);
         ResponseEntity<Map> forEntity = restTemplate.getForEntity(stringBuilder.toString(), Map.class);
         Map<String, String> map = (Map<String, String>) forEntity.getBody();
         return map;
+    }
+
+    private StringBuilder getUrl(String documentType) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(MessageFormat.format("{0}/{1}", vibevilleMediaManagerHost, documentType));
+        return stringBuilder;
+    }
+
+    @Override
+    public boolean deleteFile(String url) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(MessageFormat.format("{0}/remove",vibevilleMediaManagerHost));
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(stringBuilder.toString(), url, Boolean.class);
+        return responseEntity.getBody();
     }
 
     @Override

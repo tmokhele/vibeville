@@ -41,7 +41,6 @@ public class EventRepository {
                 .build();
     }
 
-    @CachePut("events")
     public Event addEvent(Event event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
@@ -50,7 +49,6 @@ public class EventRepository {
         return userResponseEntity.getBody();
     }
 
-    @CachePut("events")
     public Event updateEvent(Event event) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(dbUrl);
@@ -73,7 +71,6 @@ public class EventRepository {
         return eventList.get(0);
     }
 
-    @Cacheable("events")
     public Map<String, String> getAllEvents() {
         Map<String, String> jsonObjects = new LinkedHashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
